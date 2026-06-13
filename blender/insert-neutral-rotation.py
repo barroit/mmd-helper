@@ -29,7 +29,7 @@ def apply_rotation(frame, bone, arm, act):
 		key = None
 
 		for point in fc.keyframe_points:
-			if abs(point.co[0] - frame) < 0.000001:
+			if point.co[0] == frame:
 				key = point
 				break
 
