@@ -5,14 +5,11 @@ import bpy
 id = 'scene.custom_calc_to_frame'
 label = 'Calculate to Frame'
 
-def enable_item(self, context):
-	self.layout.operator(id)
-
 class calc_to_frame(bpy.types.Operator):
 	bl_idname = id
 	bl_label = label
 
-	def execute(self, context):
+	def invoke(self, context, event):
 		scene = context.scene
 		cache = scene.rigidbody_world.point_cache
 		override = context.temp_override(point_cache = cache)
@@ -23,5 +20,14 @@ class calc_to_frame(bpy.types.Operator):
 
 		return res
 
+class panel(bpy.types.Panel):
+	bl_space_type = 'DOPESHEET_EDITOR'
+	bl_region_type = 'UI'
+	bl_category = 'Action'
+	bl_label = 'Rigid Body Cache'
+
+	def draw(self, context):
+		self.layout.operator(id)
+
 bpy.utils.register_class(calc_to_frame)
-bpy.types.DOPESHEET_MT_channel.append(enable_item)
+bpy.utils.register_class(panel)
