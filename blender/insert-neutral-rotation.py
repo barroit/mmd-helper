@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import bpy
@@ -7,7 +6,7 @@ id = 'anim.insert_neutral_rotation'
 label = 'Insert neutral rotation'
 desc = 'Insert neutral rotation into active action for selected pose bones'
 
-def draw_button(self, context):
+def enable_item(self, context):
 	self.layout.operator(id)
 
 def apply_rotation(frame, bone, arm, act):
@@ -60,6 +59,6 @@ class insert_neutral_rotation(bpy.types.Operator):
 
 bpy.utils.register_class(insert_neutral_rotation)
 
-bpy.types.DOPESHEET_MT_key.append(draw_button)
-bpy.types.DOPESHEET_MT_context_menu.append(draw_button)
-bpy.types.GRAPH_MT_context_menu.append(draw_button)
+bpy.types.DOPESHEET_MT_key.append(enable_item)
+bpy.types.DOPESHEET_MT_context_menu.append(enable_item)
+bpy.types.GRAPH_MT_context_menu.append(enable_item)
