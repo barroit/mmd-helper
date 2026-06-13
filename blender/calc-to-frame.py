@@ -18,10 +18,10 @@ class calc_to_frame(bpy.types.Operator):
 		override = context.temp_override(point_cache = cache)
 
 		override.__enter__()
-		bpy.ops.ptcache.bake(bake = False)
+		res = bpy.ops.ptcache.bake('INVOKE_DEFAULT', bake=False)
 		override.__exit__(None, None, None)
 
-		return { 'FINISHED' }
+		return res
 
 bpy.utils.register_class(calc_to_frame)
 bpy.types.DOPESHEET_MT_channel.append(enable_item)
