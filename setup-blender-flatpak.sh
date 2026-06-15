@@ -12,14 +12,5 @@ flatpak override --user --filesystem=$PWD/blender:ro $id
 flatpak override --user --filesystem=xdg-run/discord-ipc-0 $id
 flatpak run $id --version >.tmp-$$
 
-config=$(flatpak run --command=sh $id -c 'printf %s $XDG_CONFIG_HOME')
-
-for blender in $config/blender/*; do
-	prefix=$blender/scripts/startup
-
-	mkdir -p $prefix
-
-	for script in blender/*; do
-		ln -sf $PWD/$script $prefix
-	done
-done
+./blender/ln-scripts.sh $(flatpak run --command=sh $id \
+				      -c 'printf %s/blender $XDG_CONFIG_HOME')
