@@ -2,13 +2,6 @@
 
 import bpy
 
-id = 'anim.insert_neutral_rotation'
-label = 'Insert neutral rotation'
-desc = 'Insert neutral rotation into active action for selected pose bones'
-
-def enable_item(self, context):
-	self.layout.operator(id)
-
 def apply_rotation(frame, bone, arm, act):
 	if bone.rotation_mode == 'QUATERNION':
 		prop = 'rotation_quaternion'
@@ -40,10 +33,10 @@ def apply_rotation(frame, bone, arm, act):
 
 		fc.update()
 
-class insert_neutral_rotation(bpy.types.Operator):
-	bl_idname = id
-	bl_label = label
-	bl_description = desc
+class ANIM_OT_insert_neutral_rotation(bpy.types.Operator):
+	bl_idname = 'anim.insert_neutral_rotation'
+	bl_label = 'Insert neutral rotation'
+	bl_description = 'Insert neutral rotation for selected pose bones'
 	bl_options = { 'REGISTER', 'UNDO' }
 
 	def execute(self, context):
@@ -57,8 +50,19 @@ class insert_neutral_rotation(bpy.types.Operator):
 
 		return { 'FINISHED' }
 
-bpy.utils.register_class(insert_neutral_rotation)
+def enable_item(self, context):
+	self.layout.operator(ANIM_OT_insert_neutral_rotation.bl_idname)
 
-bpy.types.DOPESHEET_MT_key.append(enable_item)
-bpy.types.DOPESHEET_MT_context_menu.append(enable_item)
-bpy.types.GRAPH_MT_context_menu.append(enable_item)
+def register():
+	bpy.utils.register_class(ANIM_OT_insert_neutral_rotation)
+
+	bpy.types.DOPESHEET_MT_key.append(enable_item)
+	bpy.types.DOPESHEET_MT_context_menu.append(enable_item)
+	bpy.types.GRAPH_MT_context_menu.append(enable_item)
+
+def unregister():
+	bpy.types.GRAPH_MT_context_menu.remove(enable_item)
+	bpy.types.DOPESHEET_MT_context_menu.remove(enable_item)
+	bpy.types.DOPESHEET_MT_key.remove(enable_item)
+
+	bpy.utils.unregister_class(ANIM_OT_insert_neutral_rotation)
